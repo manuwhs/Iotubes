@@ -26,14 +26,24 @@ def home():
     # prepare a cursor object using cursor() method
     cursor = cnx.cursor()
 
-    cleaning_id1="mytable"
-    query = SQL_lib.create_cleaning_table(cleaning_id = cleaning_id1)
-    SQL_lib.excute_query(query,cursor, extra_text = "create table" )
+    cleaning_id1="hello"
+    ### Get the data:
+    query = SQL_lib.get_cleanning_data(cleaning_id1)
+    SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
+    data = cursor.fetchall()
+    print data
+    row=data[0]
+    time=0
+    #time = row[0]
+    temperature = row[1]
+    phVal = row[2]
+    pressure = row[3]
+    conductivity = row[4]
 
     # disconnect from server
     cnx.close()
 
-    result = CleanTable(0,0,0,0,0)
+    result = CleanTable(time,temperature,phVal,pressure,conductivity)
 
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.
