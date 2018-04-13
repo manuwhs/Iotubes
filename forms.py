@@ -1,8 +1,19 @@
-from flask.ext.wtf import Form
-from wtforms import RadioField
+class CleanTable(object):
+    time = 0
+    temperature = 0
+    phVal = 0
+    pressure = 0
+    conductivity = 0
 
-class VoteForm(Form):
-    deploy_preference  = RadioField('Deployment Preference', choices=[
-        ('Web Site', 'Web Site'),
-        ('Cloud Service', 'Cloud Service'),
-        ('Virtual Machine', 'Virtual Machine')], default='Web Site')
+
+    # The class "constructor" - It's actually an initializer 
+    def __init__(self, time, temperature, phVal, pressure, conductivity):
+        self.time = time
+        self.temperature = temperature
+        self.phVal = phVal
+        self.pressure = pressure
+        self.conductivity = conductivity
+
+def setTable(time, temperature, phVal, pressure, conductivity):
+    table = CleanTable(time, temperature, phVal, pressure, conductivity)
+    return table

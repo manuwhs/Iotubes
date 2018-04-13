@@ -34,12 +34,16 @@
     <Compile Include="forms.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="config_mysql.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ptvs_virtualenv_proxy.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="myFlaskWebProject\__init__.py" />
     <Compile Include="myFlaskWebProject\views.py" />
+    <Compile Include="SQL_lib.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="myFlaskWebProject\" />
