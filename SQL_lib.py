@@ -4,10 +4,10 @@ from mysql.connector import errorcode
 def create_cleaning_table(cleaning_id = "CCCCCC"):
     query = ("CREATE TABLE `"+cleaning_id+"` ("
     "  `TS` TIMESTAMP NOT NULL,"     # Time stamp of cleaning
-    "  `Temp` FLOAT(3,3)  NOT NULL,"    # Temperature (usually C) NULLABLE
-    "  `PH` FLOAT(3,3)  NOT NULL,"    # PH (usually C) NULLABLE
-    "  `Pressure` FLOAT(3,3)  NOT NULL,"    # PH (usually C) NULLABLE
-    "  `Conductivity` FLOAT(3,3)  NOT NULL,"    # PH (usually C) NULLABLE
+    "  `Temp` FLOAT(6,3)  NOT NULL,"    # Temperature (usually C) NULLABLE
+    "  `PH` FLOAT(6,3)  NOT NULL,"    # PH (usually C) NULLABLE
+    "  `Pressure` FLOAT(6,3)  NOT NULL,"    # PH (usually C) NULLABLE
+    "  `Conductivity` FLOAT(6,3)  NOT NULL,"    # PH (usually C) NULLABLE
     "  PRIMARY KEY (`TS`)"
     ") ENGINE=InnoDB")   #  FLOAT(3,3)    TIMESTAMP() 
     
@@ -39,9 +39,22 @@ def add_cleanning_data(cleaning_id, data):
     """
     This funcrion parses the data from the sensors into a SQL query.
     """
-    pass
+    query = "INSERT INTO `"+cleaning_id+ "` ( TS, Temp, PH,Pressure,Conductivity) VALUES "
+    
+    for i in range(len(data)):
+        query += "('" + data["TS"][i].strftime('%Y-%m-%d %H:%m:%S') + "','"+ "%.2f"%data["Temp"][i] + "','"+ "%.2f"%data["PH"][i] + "','"+ \
+                 "%.2f"%data["Pressure"][i]+ "','"+ "%.2f"%data["Conductivity"][i]+"')"
+    
+        if(i < len(data)-1):
+            query+=","
+        else:
+             query+=";"
+    return query
 
-
+def get_cleanning_data(cleaning_id):
+     query = "SELECT * FROM  `"+cleaning_id+ "`"
+     return query
+ 
 TABLES = {}
 TABLES['employees'] = (
     "CREATE TABLE `employees` ("
