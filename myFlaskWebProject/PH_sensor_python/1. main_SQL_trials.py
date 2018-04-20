@@ -47,8 +47,8 @@ if (drop_and_recreate):
     SQL_lib.excute_query(query,cursor, extra_text = "create table" )
         
     ####### CREATE DATA ########
-    Nsamples = 20
-    data_sensors = np.random.randn(Nsamples,4)*100;
+    Nsamples = 60
+    data_sensors = np.random.randn(Nsamples,4) + np.array(np.sin(2*np.pi*np.array(range(Nsamples))/(Nsamples/4))*3).reshape(Nsamples,1);
     data_timestamps = []
     base_dt = dt.datetime.now()
     for i in range(Nsamples):
@@ -64,7 +64,7 @@ if (drop_and_recreate):
     query = SQL_lib.add_cleanning_data(cleaning_id1, df)
     SQL_lib.excute_query(query,cursor, extra_text = "Uploading data" )
     cnx.commit()
-    print query
+#    print query
 #time.sleep(1)
 #SQL_lib.excute_query(query,cursor, extra_text = "Uploading data" )
 
@@ -72,7 +72,11 @@ if (drop_and_recreate):
 query = SQL_lib.get_cleanning_data(cleaning_id1)
 SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
 data = cursor.fetchall()
+print "Fetched data"
+print data
 
+
+plt.plot(data_timestamps,data_sensors[:,1])
 #SQL_lib.add_cleanning_data(cleaning_id1, data)
 
 

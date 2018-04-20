@@ -83,10 +83,11 @@ def save_to_disk(event):
     df.to_csv('./out.csv', sep=',')
         
 ###### SET THE READING ########
-ser = serial.Serial('/dev/ttyUSB0', 9600)
-ser.readline()
-for i in range(10):
-    print (float(ser.readline().decode("utf-8").split("\n")[0]))
+if(0):
+    ser = serial.Serial('/dev/ttyUSB0', 9600)
+    ser.readline()
+    for i in range(10):
+        print (float(ser.readline().decode("utf-8").split("\n")[0]))
 #ser.close()
 
 
