@@ -5,6 +5,7 @@ Routes and views for the flask application.
 from forms import CleanTable
 import config_mysql
 import SQL_lib
+import numpy as np
 # import config_cosmos
 import pydocumentdb.document_client as document_client
 import mysql.connector
@@ -33,17 +34,27 @@ def home():
     data = cursor.fetchall()
     print data
     row=data[0]
-    time=0
-    #time = row[0]
-    temperature = row[1]
-    phVal = row[2]
-    pressure = row[3]
-    conductivity = row[4]
 
+    # Get data from colums as list objects
+    data_table=np.array(data)
+    help_B=np.asmatrix(data_table)
+    time_list=help_B[:,0]
+    temp_list=help_B[:,1]
+    ph_list=help_B[:,2]
+    pressure_list=help_B[:,3]
+    conduc_list=help_B[:,4]
+
+    data_str = "["
+    Npoints, Nvar = help_B.shape
+    for i in range(Npoints):
+        time = help_B[i,0]
+        press = help_B[i,3]
+        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f]"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
+    data_str = data_str + "]"
     # disconnect from server
     cnx.close()
 
-    result = CleanTable(time,temperature,phVal,pressure,conductivity)
+    result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
 
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.

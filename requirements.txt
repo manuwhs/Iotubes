@@ -11,3 +11,9 @@
  pydocumentdb>=1.0.0
  azure==0.8.4
  mysql_connector_python==8.0.6
+ numpy==1.14.2
+ turbogears2==2.3.12
+ kajiki==0.7.2
+ tgext.webassets==0.0.2
+ dukpy==0.2.0
+ 
