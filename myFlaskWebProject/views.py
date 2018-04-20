@@ -5,7 +5,6 @@ Routes and views for the flask application.
 from forms import CleanTable
 import config_mysql
 import SQL_lib
-import numpy as np
 # import config_cosmos
 import pydocumentdb.document_client as document_client
 import mysql.connector
@@ -14,6 +13,7 @@ from datetime import datetime
 from flask import render_template
 from myFlaskWebProject import app
 
+import numpy as np
 @app.route('/')
 @app.route('/home')
 def home():
@@ -32,9 +32,8 @@ def home():
     query = SQL_lib.get_cleanning_data(cleaning_id1)
     SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
     data = cursor.fetchall()
-    print data
+#    print data
     row=data[0]
-
     # Get data from colums as list objects
     data_table=np.array(data)
     help_B=np.asmatrix(data_table)
@@ -49,13 +48,14 @@ def home():
     for i in range(Npoints):
         time = help_B[i,0]
         press = help_B[i,3]
-        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f]"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
+        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
     data_str = data_str + "]"
     # disconnect from server
     cnx.close()
 
     result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
 
+    print "Informaiton from DDBB fetched"
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.
     #db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
@@ -80,8 +80,8 @@ def home():
 
 
     return render_template(
-        'results.html',
-        title='Home page',
+        'results_chart.html',
+        title='Some charties',
         year=datetime.now().year,
         result = result
     )
