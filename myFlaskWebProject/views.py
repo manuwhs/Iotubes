@@ -17,7 +17,7 @@ import numpy as np
 @app.route('/')
 @app.route('/home')
 def home():
-  
+
     # Open database connection
     cnx = mysql.connector.connect(user=config_mysql.DB_USER, password=config_mysql.DB_PASSWORD,
                                   host=config_mysql.DB_HOST, port = config_mysql.DB_PORT,
@@ -32,7 +32,7 @@ def home():
     query = SQL_lib.get_cleanning_data(cleaning_id1)
     SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
     data = cursor.fetchall()
-#    print data
+    # print data
     row=data[0]
     # Get data from colums as list objects
     data_table=np.array(data)
@@ -54,6 +54,21 @@ def home():
     cnx.close()
 
     result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
+
+    # Define dataSet
+    dataSet = [[1,2],[2,4]]
+
+    # Init graph
+    chartID = 'chart_ID'
+    subtitleText='test'
+    pageType = 'graph'
+    chart = {"renderTo": chartID, "type": 'line', "height": 500,}
+    series = [{"name": 'Label1', "data": dataSet}]
+    title = {"text": 'My Title'}
+    xAxis = {"type":"datetime"}
+    yAxis = {"title": {"text": 'yAxis Label'}}
+
+    return render_template('results.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis, result=result)
 
     print "Information from DDBB fetched"
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
@@ -79,12 +94,12 @@ def home():
     #    vote_object.total_votes = 1
 
 
-    return render_template(
-        'results.html',
-        title='Some charties',
-        year=datetime.now().year,
-        result = result
-    )
+    #return render_template(
+    #    'results.html',
+    #    title='Some charties',
+    #    year=datetime.now().year,
+    #    result = result
+    #)
 
 @app.route('/graph_example')
 def graph_example(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
