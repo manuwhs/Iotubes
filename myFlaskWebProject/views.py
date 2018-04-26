@@ -55,7 +55,7 @@ def home():
 
     result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
 
-    print "Informaiton from DDBB fetched"
+    print "Information from DDBB fetched"
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.
     #db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
@@ -80,11 +80,23 @@ def home():
 
 
     return render_template(
-        'results_chart.html',
+        'results.html',
         title='Some charties',
         year=datetime.now().year,
         result = result
     )
+
+@app.route('/graph_example')
+def graph_example(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
+    subtitleText='test'
+    dataSet = [[1,2],[2,4]]
+    pageType = 'graph'
+    chart = {"renderTo": chartID, "type": chart_type, "height": chart_height,}
+    series = [{"name": 'Label1', "data": dataSet}]
+    title = {"text": 'My Title'}
+    xAxis = {"type":"datetime"}
+    yAxis = {"title": {"text": 'yAxis Label'}}
+    return render_template('index.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
 
 @app.route('/contact')
 def contact():
