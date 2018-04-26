@@ -9,14 +9,6 @@
     {% extends "layout.html" %}
     {% block content %}
     <h2>Results of the vote</h2>
-    <br />
-    <p>Here is the time: {{ result.time }}</p>
-    <p>Here is my Temperature: {{ result.temperature }}</p>
-    <p>Here is my ph-Value: {{ result.phVal }}</p>
-    <p>Here is my Pressure: {{ result.pressure }}</p>
-    <p>Here is my Conductivity: {{ result.conductivity*100}}</p>
-    <br />
-
     Here I add javaScript code:
     <div id={{ chartID|safe }} class="chart" style="height: 500px"></div>
     <script>

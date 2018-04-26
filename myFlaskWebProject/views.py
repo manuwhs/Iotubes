@@ -68,7 +68,7 @@ def home():
     xAxis = {"type":"datetime"}
     yAxis = {"title": {"text": 'yAxis Label'}}
 
-    return render_template('results.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis, result=result)
+    return render_template('results_chart.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis, result=result)
 
     print "Information from DDBB fetched"
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
@@ -101,17 +101,23 @@ def home():
     #    result = result
     #)
 
-@app.route('/graph_example')
-def graph_example(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
+@app.route('/result')
+def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
     subtitleText='test'
+    # Define dataSet
     dataSet = [[1,2],[2,4]]
+
+    # Init graph
+    chartID = 'chart_ID'
+    subtitleText='test'
     pageType = 'graph'
-    chart = {"renderTo": chartID, "type": chart_type, "height": chart_height,}
+    chart = {"renderTo": chartID, "type": 'line', "height": 500,}
     series = [{"name": 'Label1', "data": dataSet}]
     title = {"text": 'My Title'}
     xAxis = {"type":"datetime"}
     yAxis = {"title": {"text": 'yAxis Label'}}
-    return render_template('index.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
+
+    return render_template('results.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
 
 @app.route('/contact')
 def contact():
