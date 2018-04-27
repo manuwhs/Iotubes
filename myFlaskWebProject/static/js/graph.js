@@ -1,7 +1,7 @@
-Highcharts.chart('temp_chart', {
+Highcharts.chart('press_chart', {
 
     title: {
-        text: 'IoTubes sensor values'
+        text: 'Pressure Chart'
     },
 
     subtitle: {
@@ -40,16 +40,9 @@ Highcharts.chart('temp_chart', {
 
     series: [{
         name: 'Installation',
-        data: [[Date.UTC(1970, 10, 25,0), 0],
-            [Date.UTC(1970, 10, 25,1), 0.25],
-            [Date.UTC(1970, 10, 25,3), 1.41],
-            [Date.UTC(1970, 10, 25,8), 1.64]]
+        data:
+            { }
     }],
-    //series: [{
-    //    name: 'Installation',
-    //    data:
-    //        {{ result.time }}
-    //}],
 
     responsive: {
         rules: [{

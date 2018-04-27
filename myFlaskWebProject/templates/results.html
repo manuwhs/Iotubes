@@ -2,7 +2,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>Results</title>
     <link rel="stylesheet" type="text/css" href="./static/content/highcharts_style.css">
 </head>
 <body>
@@ -12,8 +11,93 @@
     Here I add javaScript code:
     <!--<div id={{ chartID|safe }} class="chart" style="height: 500px"></div>-->
     <div id="temp_chart"></div>
+    Here comes the second chart:
+    <div id="press_chart"></div>
+
+    <div id="press_chart2"></div>
+
     <script src="http://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+    Highcharts.chart('temp_chart', {
+
+    title: {
+        text: 'IoTubes sensor values'
+    },
+
+    subtitle: {
+        text: 'Sensor 1'
+    },
+
+    yAxis: {
+        title: {
+            text: 'Units (S)'
+        }
+    },
+    xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: { // don't display the dummy year
+            month: '%e. %b',
+            year: '%b'
+        },
+        title: {
+            text: 'Date'
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+            connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        name: 'Installation',
+        data:
+        {{ result.time }}
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+    });
+    </script>
+
     <script src="../static/js/graph.js"></script>
+
+    <script type="text/javascript">
+        var chart = $('#press_chart').highcharts();
+        chart.series[0].setData({{ result.time }}, false);
+        chart.redraw();
+    </script>
+
+
+
+    <script src="../static/js/graph.js"></script>
+
+    <script type="text/javascript">
+        var chart = $('#press_chart2').highcharts();
+        chart.series[0].setData({{ result.time }}, false);
+        chart.redraw();
+    </script>
+
     {% endblock %}
 </body>
 </html>

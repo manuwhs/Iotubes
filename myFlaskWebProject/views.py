@@ -55,7 +55,7 @@ def home():
 
     result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
 
-    return render_template('results_chart.html', result=result)
+    return render_template('results.html', title='Home', result=result)
 
     print "Information from DDBB fetched"
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
@@ -135,16 +135,20 @@ def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
     dataSet = result.time
 
     # Init graph
-    chartID = 'chart_ID'
-    subtitleText='test'
-    pageType = 'graph'
-    chart = {"renderTo": chartID, "type": 'line', "height": 500,}
-    series = [{"name": 'Label1', "data": dataSet}]
-    title = {"text": 'My Title'}
-    xAxis = {"type":"datetime"}
-    yAxis = {"title": {"text": 'yAxis Label'}}
+    #chartID = 'chart_ID'
+    #subtitleText='test'
+    #pageType = 'graph'
+    #chart = {"renderTo": chartID, "type": 'line', "height": 500,}
+    #series = [{"name": 'Label1', "data": dataSet}]
+    #title = {"text": 'My Title'}
+    #xAxis = {"type":"datetime"}
+    #yAxis = {"title": {"text": 'yAxis Label'}}
 
-    return render_template('results.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis, result=result)
+    return render_template(
+        'results.html', 
+        title='Result', 
+        result=result
+    )
 
 @app.route('/contact')
 def contact():
@@ -181,7 +185,7 @@ def summary():
     """Renders the about page."""
     return render_template(
         'summary.html',
-        title='At a Glance',
+        title='Summary',
         year=datetime.now().year
     )
 
@@ -243,7 +247,8 @@ def create():
 
         return render_template(
             'results.html', 
-            year=datetime.now().year, 
+            year=datetime.now().year,
+            title= 'Results',
             result = result
         )
 
