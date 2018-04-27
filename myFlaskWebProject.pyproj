@@ -60,12 +60,14 @@
     <Content Include="myFlaskWebProject\static\js\hello.js" />
     <Content Include="myFlaskWebProject\static\js\react-dom.js" />
     <Content Include="myFlaskWebProject\static\js\react.js" />
+    <Content Include="myFlaskWebProject\static\js\summarytable.js" />
     <Content Include="myFlaskWebProject\static\web.config" />
     <Content Include="myFlaskWebProject\templates\clear.html" />
     <Content Include="myFlaskWebProject\templates\results.html" />
     <Content Include="myFlaskWebProject\templates\create.html" />
     <Content Include="myFlaskWebProject\templates\profile.html" />
     <Content Include="myFlaskWebProject\templates\results_chart.html" />
+    <Content Include="myFlaskWebProject\templates\summary.html" />
     <Content Include="web.config" />
     <None Include="mytubes - Web Deploy.pubxml" />
     <Content Include="requirements.txt" />

@@ -176,6 +176,15 @@ def profile():
         message='Your profile.'
     )
 
+@app.route('/summary')
+def summary():
+    """Renders the about page."""
+    return render_template(
+        'summary.html',
+        title='At a Glance',
+        year=datetime.now().year
+    )
+
 @app.route('/clear')
 def clear():
     #"""Renders the contact page."""

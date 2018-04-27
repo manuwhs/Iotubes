@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Summary</title>
+    <link href="/static/lib/tabulator-v3.5/dist/css/tabulator.min.css" rel="stylesheet">
+</head>
+<body>
+
+    {% extends "layout.html" %}
+
+    {% block content %}
+
+    <h2>Your summary:</h2>
+    <script type="text/javascript" src="/static/lib/tabulator-v3.5/dist/js/tabulator.min.js"></script>
+
+    <div id="example-table"></div>
+    <script src="../static/js/summarytable.js"></script>
+
+    {% endblock %}
+</body>
+</html>
