@@ -60,7 +60,7 @@
     series: [{
         name: 'Installation',
         data:
-        {{ result.time }}
+        {{ result }}
     }],
 
     responsive: {
@@ -84,7 +84,7 @@
 
     <script type="text/javascript">
         var chart = $('#press_chart').highcharts();
-        chart.series[0].setData({{ result.time }}, false);
+        chart.series[0].setData({{ result }}, false);
         chart.redraw();
     </script>
 
@@ -94,7 +94,7 @@
 
     <script type="text/javascript">
         var chart = $('#press_chart2').highcharts();
-        chart.series[0].setData({{ result.time }}, false);
+        chart.series[0].setData({{ result }}, false);
         chart.redraw();
     </script>
 

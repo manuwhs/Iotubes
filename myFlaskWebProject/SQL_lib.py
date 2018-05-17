@@ -1,6 +1,11 @@
 import mysql.connector
 from mysql.connector import errorcode
 
+#deprecated
+#def get_cleaning_list(cleaning_id):
+     #query = "SELECT * FROM information_schema.tables WHERE `TABLE_NAME` like 'Cleaning%'"
+     #return query
+
 def create_cleaning_table(cleaning_id = "CCCCCC"):
     query = ("CREATE TABLE `"+cleaning_id+"` ("
     "  `TS` TIMESTAMP NOT NULL,"     # Time stamp of cleaning
@@ -35,7 +40,7 @@ def excute_query(query,cursor, extra_text = "" ):
     else:
         print("OK")
 
-def add_cleanning_data(cleaning_id, data):
+def add_cleaning_data(cleaning_id, data):
     """
     This funcrion parses the data from the sensors into a SQL query.
     """
@@ -51,77 +56,26 @@ def add_cleanning_data(cleaning_id, data):
              query+=";"
     return query
 
-def get_cleanning_data(cleaning_id):
+def get_cleaning_data(cleaning_id):
      query = "SELECT * FROM  `"+cleaning_id+ "`"
      return query
+
+def set_table_summary_entry(cnx,cursor,CleaningTable):
+    query=("UPDATE `"+table_id+
+        "`SET `availability` = '0', " +
+        "`status` = 'empty', " +
+        "`owner` = '', " +
+        "`assigment-ts` = '0000-00-00 00:00:00', " +
+        "`recipient-last-name` = '', `recipient-first-name` = '', " +
+        "`recipient-street` = '', `recipient-street-no` = '', " +
+        "`recipient-postcode` = '', `recipient-city` = '', `recipient-country` = '', " +
+        "`shipment-no` = '' " +
+        "WHERE `"+table_id+"`.`box-id` = "+str(box_id))
+    try:
+        cursor.execute(query)
+        cnx.commit()
+        print "Operation successfull."
+        
+    except mysql.connector.Error:
+        print(err.msg)  
  
-TABLES = {}
-TABLES['employees'] = (
-    "CREATE TABLE `employees` ("
-    "  `emp_no` int(11) NOT NULL AUTO_INCREMENT,"
-    "  `birth_date` date NOT NULL,"
-    "  `first_name` varchar(14) NOT NULL,"
-    "  `last_name` varchar(16) NOT NULL,"
-    "  `gender` enum('M','F') NOT NULL,"
-    "  `hire_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`)"
-    ") ENGINE=InnoDB")
-
-TABLES['departments'] = (
-    "CREATE TABLE `departments` ("
-    "  `dept_no` char(4) NOT NULL,"
-    "  `dept_name` varchar(40) NOT NULL,"
-    "  PRIMARY KEY (`dept_no`), UNIQUE KEY `dept_name` (`dept_name`)"
-    ") ENGINE=InnoDB")
-
-TABLES['salaries'] = (
-    "CREATE TABLE `salaries` ("
-    "  `emp_no` int(11) NOT NULL,"
-    "  `salary` int(11) NOT NULL,"
-    "  `from_date` date NOT NULL,"
-    "  `to_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`,`from_date`), KEY `emp_no` (`emp_no`),"
-    "  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`emp_no`) "
-    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
-    ") ENGINE=InnoDB")
-
-TABLES['dept_emp'] = (
-    "CREATE TABLE `dept_emp` ("
-    "  `emp_no` int(11) NOT NULL,"
-    "  `dept_no` char(4) NOT NULL,"
-    "  `from_date` date NOT NULL,"
-    "  `to_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`,`dept_no`), KEY `emp_no` (`emp_no`),"
-    "  KEY `dept_no` (`dept_no`),"
-    "  CONSTRAINT `dept_emp_ibfk_1` FOREIGN KEY (`emp_no`) "
-    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE,"
-    "  CONSTRAINT `dept_emp_ibfk_2` FOREIGN KEY (`dept_no`) "
-    "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
-    ") ENGINE=InnoDB")
-
-TABLES['dept_manager'] = (
-    "  CREATE TABLE `dept_manager` ("
-    "  `dept_no` char(4) NOT NULL,"
-    "  `emp_no` int(11) NOT NULL,"
-    "  `from_date` date NOT NULL,"
-    "  `to_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`,`dept_no`),"
-    "  KEY `emp_no` (`emp_no`),"
-    "  KEY `dept_no` (`dept_no`),"
-    "  CONSTRAINT `dept_manager_ibfk_1` FOREIGN KEY (`emp_no`) "
-    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE,"
-    "  CONSTRAINT `dept_manager_ibfk_2` FOREIGN KEY (`dept_no`) "
-    "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
-    ") ENGINE=InnoDB")
-
-TABLES['titles'] = (
-    "CREATE TABLE `titles` ("
-    "  `emp_no` int(11) NOT NULL,"
-    "  `title` varchar(50) NOT NULL,"
-    "  `from_date` date NOT NULL,"
-    "  `to_date` date DEFAULT NULL,"
-    "  PRIMARY KEY (`emp_no`,`title`,`from_date`), KEY `emp_no` (`emp_no`),"
-    "  CONSTRAINT `titles_ibfk_1` FOREIGN KEY (`emp_no`)"
-    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
-    ") ENGINE=InnoDB")
-

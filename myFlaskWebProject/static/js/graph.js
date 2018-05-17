@@ -1,3 +1,4 @@
+
 Highcharts.chart('press_chart', {
 
     title: {

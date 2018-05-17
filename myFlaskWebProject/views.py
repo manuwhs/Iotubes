@@ -1,7 +1,6 @@
 """
 Routes and views for the flask application.
 """
-
 from forms import CleanTable
 import config_mysql
 import SQL_lib
@@ -9,8 +8,9 @@ import SQL_lib
 import pydocumentdb.document_client as document_client
 import mysql.connector
 from mysql.connector import errorcode
-from datetime import datetime
+from datetime import date, datetime
 from flask import render_template
+from flask import Flask,jsonify,json
 from myFlaskWebProject import app
 
 import numpy as np
@@ -26,38 +26,47 @@ def home():
 
     # prepare a cursor object using cursor() method
     cursor = cnx.cursor()
-
-    cleaning_id1="hello"
-    ### Get the data:
-    query = SQL_lib.get_cleanning_data(cleaning_id1)
-    SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
+    query = SQL_lib.get_cleaning_data("cleaning_summary")
+    SQL_lib.excute_query(query,cursor, extra_text = "Getting cleaning summary table" )
     data = cursor.fetchall()
-    # print data
-    row=data[0]
-    # Get data from colums as list objects
-    data_table=np.array(data)
-    help_B=np.asmatrix(data_table)
-    time_list=help_B[:,0]
-    temp_list=help_B[:,1]
-    ph_list=help_B[:,2]
-    pressure_list=help_B[:,3]
-    conduc_list=help_B[:,4]
-
-    data_str = "["
-    Npoints, Nvar = help_B.shape
-    for i in range(Npoints):
-        time = help_B[i,0]
-        press = help_B[i,3]
-        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
-    data_str = data_str + "]"
+    #print data[0]
     # disconnect from server
     cnx.close()
 
-    result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
+    # Post-data-processing
+    #data_table=np.array(data)
+    #help=np.asmatrix(data_table)
+    #list=[]
+    #list=help[:,0]
 
-    return render_template('results.html', title='Home', result=result)
+    #json_data=[]
+   # for result in data:
+    #    json_data.append(dict(zip(row_headers,result)))
+    #print json.dumps(json_data, default=obj_dict)
 
-    print "Information from DDBB fetched"
+    sum=[]
+    for row in data:
+        print row
+        id = row[1]
+        datetime = row[2]
+        user = row[3]
+        status = row[4]
+        table = CleanTable(row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
+        sum.append(table)
+    
+    jsonStr = json.dumps([e.toJSON() for e in sum])
+    print repr(jsonStr)
+    #json_string=json.dumps(sum)
+    #print json_string
+
+    #return render_template('results.html', title='Home', result=result)
+    return render_template(
+        'summary.html',
+        title='Home',
+        year=datetime.now().year,
+        sum=jsonStr
+    )
+
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.
     #db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
@@ -87,11 +96,13 @@ def home():
     #    year=datetime.now().year,
     #    result = result
     #)
+#webpageid="Cleaning_id_12345678"
+@app.route('/result/<cleaning_id>')
+def result(cleaning_id, chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
 
-@app.route('/result')
-def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
+    print cleaning_id
 
-        # Open database connection
+    # Open database connection
     cnx = mysql.connector.connect(user=config_mysql.DB_USER, password=config_mysql.DB_PASSWORD,
                                   host=config_mysql.DB_HOST, port = config_mysql.DB_PORT,
                                   database=config_mysql.DB_NAME)
@@ -100,13 +111,14 @@ def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
     # prepare a cursor object using cursor() method
     cursor = cnx.cursor()
 
-    cleaning_id1="hello"
-    ### Get the data:
-    query = SQL_lib.get_cleanning_data(cleaning_id1)
+    # cleaning_id1="hello"
+    # Get data of MySQL:
+    query = SQL_lib.get_cleaning_data(cleaning_id)
     SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
     data = cursor.fetchall()
-    # print data
-    row=data[0]
+    # Disconnect from server
+    cnx.close()
+
     # Get data from colums as list objects
     data_table=np.array(data)
     help_B=np.asmatrix(data_table)
@@ -123,16 +135,6 @@ def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
         press = help_B[i,3]
         data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
     data_str = data_str + "]"
-    # disconnect from server
-    cnx.close()
-
-    result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
-
-    print result.time
-
-    subtitleText='test'
-    # Define dataSet
-    dataSet = result.time
 
     # Init graph
     #chartID = 'chart_ID'
@@ -147,8 +149,9 @@ def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
     return render_template(
         'results.html', 
         title='Result', 
-        result=result
+        result=data_str
     )
+
 
 @app.route('/contact')
 def contact():
@@ -258,3 +261,10 @@ def create():
             title = 'Create',
             year=datetime.now().year
         )
+
+def obj_dict(obj):
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    else:
+        return obj.__dict__
+

@@ -1,23 +1,37 @@
 //sample data
-var tabledata = [
-    { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "12/08/2017" },
-    { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
-    { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982" },
-    { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
-    { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" }
-];
+
+var printIcon = function (value, data, cell, row, options) { //plain text value
+    //console.log(value.cell.value)
+    link = "<img class='infoImage' src='/static/icons/" + value.cell.value + ".gif' height='20'>";
+    console.log(link)
+    //return "<img class='infoImage' src='/static/icons/pass.png' height='25' width='20'>";
+    return link;
+};
+
+var linktourl = function (value, data, cell, row, options) {
+    console.log(value)
+    url="result/" + value.cell.value
+    return url;
+};
 
 $("#example-table").tabulator({
-    height: 200, // set height of table to enable virtual DOM
+    height: 600, // set height of table to enable virtual DOM
     data: tabledata, //load initial data into table
     layout: "fitColumns", //fit columns to width of table (optional)
     columns: [ //Define Table Columns
-        { title: "Name", field: "name", sorter: "string", width: 150 },
-        { title: "Age", field: "age", sorter: "number", align: "left", formatter: "progress" },
-        { title: "Favourite Color", field: "col", sorter: "string", sortable: false },
-        { title: "Date Of Birth", field: "dob", sorter: "date", align: "center" }
+        //{ title: "A", field: "name", formatter: link, "www.google.de"},
+        { title: "ID", field: "name", sorter: "string", width: 200, formatter: "link", formatterParams:{url:linktourl} },
+        { title: "Datetime", field: "date", sorter: "string" },
+        //{ title: "Status", field: "status", sorter: "string" },
+        { title: "User", field: "user", sorter: "string" },
+        { title: "temp-setValue [degree]", field: "temp", sorter: "number" },
+        { title: "ph-setValue [no]", field: "ph", sorter: "string" },
+        { title: "con-setValue[unit]", field: "con", sorter: "string" },
+        { title: "Status", field: "status", formatter: printIcon, variableHeight: true}
+        
     ],
     rowClick: function (e, id, data, row) { //trigger an alert message when the row is clicked
-        alert("Row " + id + " Clicked!!!!");
+        row.select(); //toggle row selected state
+        //alert("Row " + id + " Clicked!!!!");
     }
 });
