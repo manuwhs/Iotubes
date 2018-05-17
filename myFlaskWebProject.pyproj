@@ -71,11 +71,15 @@
   <ItemGroup>
     <Content Include="myFlaskWebProject\static\icons\fail.png" />
     <Content Include="myFlaskWebProject\static\icons\pass.png" />
+    <Content Include="myFlaskWebProject\static\js\conducchart.js" />
     <Content Include="myFlaskWebProject\static\js\graph.js" />
     <Content Include="myFlaskWebProject\static\js\HelloWorld.jsx" />
+    <Content Include="myFlaskWebProject\static\js\phchart.js" />
+    <Content Include="myFlaskWebProject\static\js\presschart.js" />
     <Content Include="myFlaskWebProject\static\js\react-dom.js" />
     <Content Include="myFlaskWebProject\static\js\react.js" />
     <Content Include="myFlaskWebProject\static\js\summarytable.js" />
+    <Content Include="myFlaskWebProject\static\js\tempchart.js" />
     <Content Include="myFlaskWebProject\static\lib\tabulator-v3.5\.gitignore" />
     <Content Include="myFlaskWebProject\static\lib\tabulator-v3.5\bower.json" />
     <Content Include="myFlaskWebProject\static\lib\tabulator-v3.5\dist\css\bootstrap\tabulator_bootstrap.css" />

@@ -14,7 +14,7 @@ var linktourl = function (value, data, cell, row, options) {
     return url;
 };
 
-$("#example-table").tabulator({
+$("#summary-table").tabulator({
     height: 600, // set height of table to enable virtual DOM
     data: tabledata, //load initial data into table
     layout: "fitColumns", //fit columns to width of table (optional)

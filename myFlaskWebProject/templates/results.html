@@ -2,102 +2,39 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="./static/content/highcharts_style.css">
+    <!--<link rel="stylesheet" type="text/css" href="./static/content/highcharts_style.css">-->
 </head>
 <body>
     {% extends "layout.html" %}
     {% block content %}
-    <h2>Results of the vote</h2>
-    Here I add javaScript code:
-    <!--<div id={{ chartID|safe }} class="chart" style="height: 500px"></div>-->
-    <div id="temp_chart"></div>
-    Here comes the second chart:
-    <div id="press_chart"></div>
+    <h3 style="margin-bottom:1cm;">Results of the cleaning procedure:</h3>
 
-    <div id="press_chart2"></div>
+    <!-- temperature chart -->
+    <div style="margin-bottom:1cm;" id="temp_chart"></div>
+    <!-- phVal chart -->
+    <div style="margin-bottom:1cm;" id="ph_chart"></div>
+    <!-- pressure chart -->
+    <div style="margin-bottom:1cm;" id="press_chart"></div>
+    <!-- conductivity chart -->
+    <div style="margin-bottom:1cm;" id="conduc_chart"></div>
 
     <script src="http://code.highcharts.com/highcharts.js"></script>
-
     <script>
-    Highcharts.chart('temp_chart', {
-
-    title: {
-        text: 'IoTubes sensor values'
-    },
-
-    subtitle: {
-        text: 'Sensor 1'
-    },
-
-    yAxis: {
-        title: {
-            text: 'Units (S)'
-        }
-    },
-    xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: { // don't display the dummy year
-            month: '%e. %b',
-            year: '%b'
-        },
-        title: {
-            text: 'Date'
-        }
-    },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-
-    plotOptions: {
-        series: {
-            label: {
-            connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        name: 'Installation',
-        data:
-        {{ result }}
-    }],
-
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                }
-            }
-        }]
-    }
-    });
+        var temp_data = {{ temp_data }}
+        var ph_data = {{ ph_data }}
+        var press_data = {{ press_data }}
+        var conduc_data = {{ conduc_data }}
+        console.log(temp_data)
+        console.log(ph_data)
+        console.log(press_data)
+        console.log(conduc_data)
+        drawChart(temp_data);
     </script>
-
-    <script src="../static/js/graph.js"></script>
-
-    <script type="text/javascript">
-        var chart = $('#press_chart').highcharts();
-        chart.series[0].setData({{ result }}, false);
-        chart.redraw();
-    </script>
-
-
-
-    <script src="../static/js/graph.js"></script>
-
-    <script type="text/javascript">
-        var chart = $('#press_chart2').highcharts();
-        chart.series[0].setData({{ result }}, false);
-        chart.redraw();
-    </script>
+    <script src="../static/js/tempchart.js" charset="utf-8"></script>
+    <script src="../static/js/presschart.js" charset="utf-8"></script>
+    <script src="../static/js/phchart.js" charset="utf-8"></script>
+    <script src="../static/js/conducchart.js" charset="utf-8"></script>
 
     {% endblock %}
 </body>
-</html>
+    </html>

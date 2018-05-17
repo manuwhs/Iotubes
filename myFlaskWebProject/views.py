@@ -120,36 +120,47 @@ def result(cleaning_id, chartID = 'chart_ID', chart_type = 'line', chart_height 
     cnx.close()
 
     # Get data from colums as list objects
-    data_table=np.array(data)
-    help_B=np.asmatrix(data_table)
-    time_list=help_B[:,0]
-    temp_list=help_B[:,1]
-    ph_list=help_B[:,2]
-    pressure_list=help_B[:,3]
-    conduc_list=help_B[:,4]
+    help=np.array(data)
+    data=np.asmatrix(help)
+    #timestamp_list=data[:,0]
+    #temp_list=data[:,1]
+    #ph_list=data[:,2]
+    #pressure_list=data[:,3]
+    #conduc_list=data[:,4]
 
+    temp_chart_data = "["
+    ph_chart_data = "["
+    press_chart_data = "["
+    conduc_chart_data = "["
     data_str = "["
-    Npoints, Nvar = help_B.shape
+    Npoints, Nvar = data.shape
     for i in range(Npoints):
-        time = help_B[i,0]
-        press = help_B[i,3]
-        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
+        time = data[i,0]
+        temp = data[i,1]
+        ph = data[i,2]
+        press=data[i,3]
+        conduc=data[i,4]
+        print time
+        #data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,(time.month-1),time.day,time.hour,time.minute,time.second, temp)
+        temp_chart_data = temp_chart_data + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,(time.month-1),time.day,time.hour,time.minute,time.second, temp)
+        ph_chart_data = ph_chart_data + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,(time.month-1),time.day,time.hour,time.minute,time.second, ph)
+        press_chart_data = press_chart_data + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,(time.month-1),time.day,time.hour,time.minute,time.second, press)
+        conduc_chart_data = conduc_chart_data + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,(time.month-1),time.day,time.hour,time.minute,time.second, conduc)
+        print temp_chart_data
     data_str = data_str + "]"
-
-    # Init graph
-    #chartID = 'chart_ID'
-    #subtitleText='test'
-    #pageType = 'graph'
-    #chart = {"renderTo": chartID, "type": 'line', "height": 500,}
-    #series = [{"name": 'Label1', "data": dataSet}]
-    #title = {"text": 'My Title'}
-    #xAxis = {"type":"datetime"}
-    #yAxis = {"title": {"text": 'yAxis Label'}}
+    temp_chart_data = temp_chart_data + "]"
+    ph_chart_data = ph_chart_data + "]"
+    press_chart_data = press_chart_data + "]"
+    conduc_chart_data = conduc_chart_data + "]"
 
     return render_template(
         'results.html', 
         title='Result', 
-        result=data_str
+        result=data_str,
+        temp_data = temp_chart_data,
+        ph_data =  ph_chart_data,
+        press_data = press_chart_data,
+        conduc_data = conduc_chart_data
     )
 
 
