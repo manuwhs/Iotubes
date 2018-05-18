@@ -74,6 +74,7 @@
     <Content Include="myFlaskWebProject\static\js\conducchart.js" />
     <Content Include="myFlaskWebProject\static\js\graph.js" />
     <Content Include="myFlaskWebProject\static\js\HelloWorld.jsx" />
+    <Content Include="myFlaskWebProject\static\js\livetemp.js" />
     <Content Include="myFlaskWebProject\static\js\phchart.js" />
     <Content Include="myFlaskWebProject\static\js\presschart.js" />
     <Content Include="myFlaskWebProject\static\js\react-dom.js" />

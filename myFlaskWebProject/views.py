@@ -9,11 +9,14 @@ import pydocumentdb.document_client as document_client
 import mysql.connector
 from mysql.connector import errorcode
 from datetime import date, datetime
-from flask import render_template
+from flask import render_template, make_response
 from flask import Flask,jsonify,json
 from myFlaskWebProject import app
-
+from random import random
+from time import time
 import numpy as np
+
+
 @app.route('/')
 @app.route('/home')
 def home():
@@ -96,6 +99,54 @@ def home():
     #    year=datetime.now().year,
     #    result = result
     #)
+
+#@app.route('/live-data')
+#def live_data():
+#    ## Open database connection
+#    #cnx = mysql.connector.connect(user=config_mysql.DB_USER, password=config_mysql.DB_PASSWORD,
+#    #                              host=config_mysql.DB_HOST, port = config_mysql.DB_PORT,
+#    #                              database=config_mysql.DB_NAME)
+
+
+#    ## prepare a cursor object using cursor() method
+#    #cursor = cnx.cursor()
+#    #query = SQL_lib.get_cleaning_data("hello")
+#    #SQL_lib.excute_query(query,cursor, extra_text = "Getting cleaning summary table" )
+#    #data = cursor.fetchall()
+#    ##print data[0]
+#    ## disconnect from server
+#    #cnx.close()
+
+#    #help=np.array(data)
+#    #data=np.asmatrix(help)
+ 
+
+#    # Create a PHP array and echo it as JSON
+#    #time=datetime.now()
+#    #temp=random() * 100
+#    #print data
+
+#    #json=time.strftime("%Y-%m-%d %H:%M:%S")
+#    #time = strftime("Date.UTC(%Y,%m,%d,%H,%M,%S")
+#    #temp_json=json.dumps(json)
+#    #chart_data = [[datetime.now(), random() * 100],[datetime.now(), random() * 100]]
+
+#    chart_data = [datetime.now().isoformat(),random() * 100]
+#    ptint chart_data
+#    response = make_response(json.dumps(chart_data))
+#    print json.dumps(chart_data)
+#    response.content_type = 'application/json'
+#    return chart_data
+
+@app.route('/live-data')
+def live_data():
+    # Create a PHP array and echo it as JSON
+    data = [time() * 1000, random() * 100]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
+
+
 #webpageid="Cleaning_id_12345678"
 @app.route('/result/<cleaning_id>')
 def result(cleaning_id, chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
