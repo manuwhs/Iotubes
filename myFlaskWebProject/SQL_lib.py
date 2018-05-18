@@ -1,10 +1,44 @@
 import mysql.connector
 from mysql.connector import errorcode
+import time
 
 #deprecated
 #def get_cleaning_list(cleaning_id):
      #query = "SELECT * FROM information_schema.tables WHERE `TABLE_NAME` like 'Cleaning%'"
      #return query
+
+def set_summary_entry(cnx,cursor,summary_id,table_id,user,procedure,pipe_id):
+    timestamp=time.strftime('%Y-%m-%d %H:%M:%S')
+    query=("INSERT INTO `"+ summary_id +
+        "`SET `cleaning_id` = '"+ table_id +"', " +
+        "`status` = 'progress', " +
+        "`user` = '"+ user +"', " +
+        "`datetime` = '"+ timestamp +"', " +
+        "`procedure` = '"+ procedure +"', " +
+        "`pipe_id` = '"+ pipe_id + "'")
+    print query
+    try:
+        cursor.execute(query)
+        cnx.commit()
+        print "Operation successfull."
+        
+    except mysql.connector.Error:
+        print(err.msg)
+    return query
+
+def update_table_status(cnx,cursor,summary_id,table_id,status):
+    query=("UPDATE `"+ summary_id +
+        "`SET `status` = '"+ status +
+        "' WHERE `"+ summary_id +"`.`cleaning_id` = '"+ table_id + "'")
+    print query
+    try:
+        cursor.execute(query)
+        cnx.commit()
+        print "Operation successfull."
+        
+    except mysql.connector.Error:
+        print(err.msg)
+    return query
 
 def create_cleaning_table(cleaning_id = "CCCCCC"):
     query = ("CREATE TABLE `"+cleaning_id+"` ("

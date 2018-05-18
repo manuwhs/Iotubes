@@ -147,8 +147,22 @@ def live_data():
     response.content_type = 'application/json'
     return response
 
+@app.route('/test')
+def test():
+    # Open database connection
+    cnx = mysql.connector.connect(user=config_mysql.DB_USER, password=config_mysql.DB_PASSWORD,
+                                  host=config_mysql.DB_HOST, port = config_mysql.DB_PORT,
+                                  database=config_mysql.DB_NAME)
 
-#webpageid="Cleaning_id_12345678"
+
+    # prepare a cursor object using cursor() method
+    cursor = cnx.cursor()
+    # Create a PHP array and echo it as JSON
+    # data = [time(), random() * 100],[time(), random() * 100]]
+    table_id="hallo2"
+    SQL_lib.update_table_status(cnx,cursor,"cleaning_summary",table_id,"fail")
+
+
 @app.route('/result/<cleaning_id>')
 def result(cleaning_id, chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
 
