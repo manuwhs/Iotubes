@@ -4,43 +4,22 @@ var chart;
  * Request data from the server, add it to the graph and set a timeout
  * to request again
  */
-//function requestData() {
-//    $.ajax({
-//        url: '/live-data',
-//        success: function (points) {
-//            console.log(points)
-//            var series = chart.series[0];
-//            //var shift = series.data.length > 20; // shift if the series is longer than 20
-//            var shift = false;
-//            //console.log(points.length)
-//            // add the point
-//            //for (var i = 0; i < points.length; i++) {
-//            //    point = points[i]
-//            //    //console.log(point)
-//            //    chart.series[0].addPoint(point, true, shift);
-//            //    
-//            //}
-//            chart.series[0].addPoint(point, true, shift);
-//            console.log(chart.series[0].data)
-//            // call it again after one second
-//            setTimeout(requestData, 1000);
-//        },
-//        cache: false
-//    });
-//}
 
 function requestData() {
     $.ajax({
         url: '/live-data',
-        success: function (point) {
-            var series = chart.series[0],
-                shift = series.data.length > 20; // shift if the series is
-            // longer than 20
+        success: function (points) {
+            var series = chart.series[0];
+            console.log(series.data.length)
+            var shift = series.data.length > 20; // shift if the series is longer than 20
+            //var shift = false;
 
-            // add the point
-            chart.series[0].addPoint(point, true, shift);
+            for (var i = 0; i < points.length; i++) {
+                point = points[i]
+                console.log(point)
+                chart.series[0].addPoint(point, true, shift);
+            }
 
-            // call it again after one second
             setTimeout(requestData, 1000);
         },
         cache: false
